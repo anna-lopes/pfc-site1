@@ -1,9 +1,18 @@
+body {
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+  padding: 4px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
 ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
-  overflow: hidden;
-  background-color: #35153d;
+  overflow: hidden;;
 }
 
 li {
@@ -25,6 +34,7 @@ li a:hover {
 
 body{
   background-color: #c28ae379;
+  text-align: justify;
 }
 
 h1{
@@ -34,4 +44,19 @@ h1{
 form{
   font-size: small;
   text-align: justify;
+}
+#menu{
+  position: sticky;
+  top: 0px;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #35153d;
+  padding: 0 8px;
+}
+
+#menu h1 {
+  font-size: 16px;
+  color: white;
 }
