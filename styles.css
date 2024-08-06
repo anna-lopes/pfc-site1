@@ -1,18 +1,9 @@
-body {
-  margin: 0;
-  font-family: 'Arial', sans-serif;
-  padding: 4px;
-}
-
-* {
-  box-sizing: border-box;
-}
-
 ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
-  overflow: hidden;;
+  overflow: hidden;
+  background-color: #333;
 }
 
 li {
@@ -29,34 +20,5 @@ li a {
 
 /* Change the link color to #111 (black) on hover */
 li a:hover {
-  background-color: #4d195a;
-}
-
-body{
-  background-color: #c28ae379;
-  text-align: justify;
-}
-
-h1{
-  text-align: center;
-}
-
-form{
-  font-size: small;
-  text-align: justify;
-}
-#menu{
-  position: sticky;
-  top: 0px;
-  z-index: 1;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #35153d;
-  padding: 0 8px;
-}
-
-#menu h1 {
-  font-size: 16px;
-  color: white;
+  background-color: #111;
 }
