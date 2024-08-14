@@ -1,19 +1,24 @@
 body {
+  font-family: Arial, sans-serif;
   margin: 0;
-  font-family: 'sans-serif';
-  padding: 4px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: linear-gradient(to right, #004aad, #cb6ce6);
+  color: #000000;
 }
 
-* {
-  box-sizing: border-box;
-}
+
+
 
 ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
   overflow: hidden;
-  ;
+  background-color: rgba(255, 255, 255, 0.795);
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 li {
@@ -21,70 +26,162 @@ li {
 }
 
 li a {
-  display: block;
-  color: rgb(0, 0, 0);
+  color: #333;
   text-align: center;
-  padding: 14px 16px;
+  padding: 14px 20px;
   text-decoration: none;
-  font-size: 20px;
+  font-size: 18px;
+  font-weight: bold;
+  display: inline-block;
 }
 
-/* Change the link color to #111 (black) on hover */
 li a:hover {
-  background-color: #f5f5f57e;
-}
-
-body {
-  text-align: justify;
-  background: linear-gradient(to right, #b91c5d, #2459bb);
-  /* Gradiente do vermelho para o laranja */
-}
-
-h1 {
-  text-align: center;
-}
-
-form {
-  font-size: small;
-  text-align: justify;
+  background-color: #ddd;
 }
 
 #menu {
   position: sticky;
-  top: 0px;
-  z-index: 1;
+  top: 0;
+  z-index: 1000;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #cac2cc75;
-  padding: 3px;
-  border-radius: 14px;
+  padding: 10px 20px;
+  background-color: #ffffffa9;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 #menu h1 {
-  font-size: 25px;
-  color: #000000;
-  margin: 10px;
+  font-size: 24px;
+  color: #333;
+  margin: 0;
+}
+
+a h3 {
+  color: #fff;
+  font-size: 24px;
+  text-align: center;
+  margin: 20px 0;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  transition: transform 0.3s ease, background 0.3s ease;
+  text-decoration: none;
+}
+
+a h3:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.05);
+}
+
+a {
+  text-decoration: none;
 }
 
 .spaco-content {
   width: 90%;
-  background-color: #cac2cc50;
-  margin: 2rem 0;
-  border-radius: 14px;
+  background-color: #ffffffa8;
+  margin: 20px auto;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .spaco-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 10px;
+  flex-direction: column;
 }
 
 .espaco {
-  margin-left: 30px;
-  /* Espaço à esquerda */
-  margin-right: 30px;
-  /* Espaço à direita */
-  font-size: 25px;
+  font-size: 20px;
+  line-height: 1.6;
+  text-align: justify;
+  color: #555;
+}
+
+/* Centralizando o chatbot na página e garantindo que não sobreponha o menu */
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centraliza horizontalmente */
+  justify-content: center; /* Centraliza verticalmente */
+  flex: 1;
+  padding: 20px;
+  margin-top: 50px; /* Reduzido para aproximar do menu */
+  height: calc(100vh - 50px); /* Ajustado para a nova altura */
+}
+
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 600px; /* Limite opcional de largura */
+  height: calc(100vh - 100px); /* Altura dinâmica baseada na viewport */
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.chat-box {
+  flex: 1;
+  overflow-y: auto; /* Permitir rolagem vertical */
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  margin-bottom: 20px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  max-height: calc(100% - 100px); /* Ajuste para limitar a altura */
+}
+
+.input-area {
+  display: flex;
+  flex-direction: column;
+}
+
+textarea {
+  width: 100%;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-sizing: border-box;
+  resize: none;
+  margin-bottom: 10px;
+}
+
+button {
+  padding: 15px;
+  border: none;
+  border-radius: 10px;
+  background-color: #522699;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #522699c0;
+}
+
+.message {
+  margin-bottom: 10px;
+  padding: 15px;
+  border-radius: 10px;
+  max-width: 80%;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.user-message {
+  background-color: #d4def4;
+  align-self: flex-end;
+}
+
+.ai-message {
+  background-color: #f1f0f0;
+  align-self: flex-start;
 }
