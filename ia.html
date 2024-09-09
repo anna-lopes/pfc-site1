@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -16,19 +16,16 @@
   
     <ul id="menu">
         <div style="display: flex; justify-content: center; align-items: center;">
-
             <img src="logo.png" width="70" height="70" style="border-radius: 20px;">
-          <h1>Teenage IA</h1>
+            <h1>Teenage IA</h1>
         </div>
         <div>
-          <li><a href="index.html">Início</a></li>
-          <li><a href="relatos.html">Relatos</a></li>
-          <li><a href="ia.html">IA</a></li>
-          <li><a href="sobre.html">Sobre Nós</a></li>
+            <li><a href="index.html">Início</a></li>
+            <li><a href="relatos.html">Relatos</a></li>
+            <li><a href="ia.html">IA</a></li>
+            <li><a href="sobre.html">Sobre Nós</a></li>
         </div>
-      </ul>
-      
-
+    </ul>
 </head>
 
 <body>
@@ -55,7 +52,8 @@
         document.getElementById("send-button").addEventListener("click", run);
 
         async function run() {
-            const prompt = "Você é uma espécie de orientador, no qual conversa, dá conselhos e encaminha para um responsável medico psicólogo profissional caso a conversa tome um rumo perigoso. Caso aconteça alguma cituacao grave ou fale algo grave. voce deve cortar o assunto imediatamente e solicitar a pessoa a ligar para o cvv ou algo mais critico. Voce nao pode dar respostas com menos de 15 palavras. Caso aconteca, reenvie a mensagem. Sendo isso, responda o próximo prompt com esses quesitos: " + document.getElementById("prompt").value;
+            const userMessage = document.getElementById("prompt").value;
+            const prompt = "Você é uma espécie de orientador, no qual conversa, dá conselhos e encaminha para um responsável medico psicólogo profissional caso a conversa tome um rumo perigoso. Caso aconteça alguma cituacao grave ou fale algo grave. voce deve cortar o assunto imediatamente e solicitar a pessoa a ligar para o cvv ou algo mais critico. Voce nao pode dar respostas com menos de 15 palavras. Caso aconteca, reenvie a mensagem. Sendo isso, responda o próximo prompt com esses quesitos: " + userMessage;
 
             const result = await model.generateContent(prompt);
             const response = await result.response;
@@ -63,7 +61,7 @@
 
             // Append message to chat-box
             const chatBox = document.getElementById("chat-box");
-            chatBox.innerHTML += `<div class="message user-message">${document.getElementById("prompt").value}</div>`;
+            chatBox.innerHTML += `<div class="message user-message">${userMessage}</div>`;
             chatBox.innerHTML += `<div class="message ai-message">${text}</div>`;
 
             // Scroll to the bottom
@@ -71,9 +69,28 @@
 
             // Clear the input
             document.getElementById("prompt").value = "";
+
+            // Registra a ação do usuário no backend
+            await registerUserAction('user123', userMessage);
+        }
+
+        async function registerUserAction(userId, action) {
+            try {
+                const response = await fetch('http://localhost:3000/register-action', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ userId, action })
+                });
+
+                const result = await response.json();
+                console.log(result.message); // Para fins de depuração
+            } catch (error) {
+                console.error('Erro ao registrar ação:', error);
+            }
         }
     </script>
 </body>
 
 </html>
-
