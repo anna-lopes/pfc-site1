@@ -1,49 +1,88 @@
 const express = require('express');
-const mongoose = require('mongoose');
-const cors = require('cors');
-require('dotenv').config(); // Carrega variáveis de ambiente do arquivo .env
+const { MongoClient, ServerApiVersion } = require('mongodb');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const port = 3000;
 
-// Middleware para interpretar JSON no corpo da requisição
+const uri = "mongodb+srv://nicolassiribolabordini:OzV8YeG6z813dPWs@cluster0.btxom.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+
+const client = new MongoClient(uri, {
+  serverApi: ServerApiVersion.v1,
+});
+
+// Middleware to parse JSON request bodies
 app.use(express.json());
-app.use(cors());
 
-// Conexão com o MongoDB Atlas usando variável de ambiente
-const mongoURI = process.env.MONGO_URI; // Pegando a URI do MongoDB do .env
-mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => console.log('Conectado ao MongoDB Atlas!'))
-    .catch(err => console.error('Erro ao conectar ao MongoDB Atlas:', err));
+async function connectMongo() {
+  try {
+    await client.connect();
+    console.log("Connected to MongoDB Atlas");
+  } catch (err) {
+    console.error("Error connecting to MongoDB Atlas:", err);
+    process.exit(1); // Exit the process on connection failure
+  }
+}
 
-// Definição do Schema e Modelo para Ações de Usuário
-const userActionSchema = new mongoose.Schema({
-    userId: { type: String, required: true },
-    action: { type: String, required: true },
-    timestamp: { type: Date, default: Date.now }
+connectMongo();
+
+// Endpoint to register conversation history
+app.post('/historico', async (req, res) => {
+  const { usuario, mensagem, timestamp = new Date() } = req.body; // Include timestamp by default
+
+  if (!usuario || !mensagem) {
+    return res.status(400).json({ message: 'Usuário e mensagem são obrigatórios' });
+  }
+
+  try {
+    const db = client.db("chatbot"); // Replace with your actual database name
+    const collection = db.collection("historico"); // Replace with your actual collection name
+
+    const result = await collection.insertOne({ usuario, mensagem, timestamp });
+    res.status(201).json({ message: 'Conversa registrada', id: result.insertedId });
+  } catch (err) {
+    console.error("Error inserting conversation document:", err);
+    res.status(500).json({ message: 'Erro interno do servidor' });
+  }
 });
 
-const UserAction = mongoose.model('UserAction', userActionSchema);
+// Endpoint to register login data (example)
+app.post('/login', async (req, res) => {
+  const { username, password } = req.body;
 
-// Endpoint para registrar uma ação de usuário
-app.post('/register-action', async (req, res) => {
-    const { userId, action } = req.body;
+  if (!username || !password) {
+    return res.status(400).json({ message: 'Nome de usuário e senha são obrigatórios' });
+  }
 
-    if (!userId || !action) {
-        return res.status(400).json({ error: 'userId e action são obrigatórios.' });
-    }
+  // Implement login validation logic here (e.g., check against a user database)
+  // ...
 
-    try {
-        const newAction = new UserAction({ userId, action });
-        await newAction.save();
-        res.status(201).json({ message: 'Ação registrada com sucesso!' });
-    } catch (err) {
-        console.error('Erro ao registrar a ação:', err);
-        res.status(500).json({ error: 'Erro ao registrar a ação.' });
-    }
+  try {
+    const db = client.db("chatbot"); // Replace with your actual database name
+    const collection = db.collection("logins"); // Replace with your actual collection name
+
+    await collection.insertOne({ username, timestamp: new Date() }); // Log login attempt
+    res.status(200).json({ message: 'Login registrado' }); // Adjust response based on validation
+  } catch (err) {
+    console.error("Error inserting login document:", err);
+    res.status(500).json({ message: 'Erro interno do servidor' });
+  }
 });
 
-// Iniciar o Servidor
-app.listen(PORT, () => {
-    console.log(`Servidor rodando na porta ${PORT}`);
+// Start the server
+app.listen(port, () => {
+  console.log(`Servidor rodando na porta ${port}`);
 });
+
+// Graceful shutdown on termination
+process.on('SIGINT', async () => {
+  await client.close();
+  console.log("Conexão com o MongoDB Atlas fechada");
+  process.exit(0);
+});
+
+const tabela = mongoose.model(
+  "historico",
+  {
+    mensagem: String
+  }
+);

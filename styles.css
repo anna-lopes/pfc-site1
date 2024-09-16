@@ -50,7 +50,6 @@ li a:hover {
   background-color: #ffffffa9;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  margin-top: 10px;
 }
 
 #menu h1 {
@@ -186,4 +185,3 @@ button:hover {
   background-color: #f1f0f0;
   align-self: flex-start;
 }
-

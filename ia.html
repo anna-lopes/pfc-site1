@@ -1,34 +1,176 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
     <title>Teenage IA</title>
+
+    <!-- Importação para Google Generative AI -->
     <script type="importmap">
         {
             "imports": {
                 "@google/generative-ai": "https://esm.run/@google/generative-ai"
             }
         }
-    </script> 
-  
-    <ul id="menu">
-        <div style="display: flex; justify-content: center; align-items: center;">
-            <img src="logo.png" width="70" height="70" style="border-radius: 20px;">
-            <h1>Teenage IA</h1>
-        </div>
-        <div>
-            <li><a href="index.html">Início</a></li>
-            <li><a href="relatos.html">Relatos</a></li>
-            <li><a href="ia.html">IA</a></li>
-            <li><a href="sobre.html">Sobre Nós</a></li>
-        </div>
-    </ul>
+    </script>
+
+    <style>
+        /* Estilos para o contêiner principal da navbar */
+        .navbar-container {
+            display: flex;
+            justify-content: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            margin: 0 20px;
+            padding: 10px 0;
+        }
+
+        /* Estilos para a navbar */
+        #menu {
+            display: flex;
+            align-items: center;
+            padding: 0;
+            width: 100%;
+            max-width: 1256px;
+        }
+
+        /* Estilos para o logotipo e texto */
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-container img {
+            width: 100px;
+            height: auto;
+            margin-right: 5px;
+        }
+
+        /* Estilos para os itens da navbar */
+        #menu li {
+            list-style-type: none;
+            display: inline;
+            margin-right: 15px;
+        }
+
+        /* Espaço para evitar sobreposição da navbar */
+        .spaco-container {
+            margin-top: 80px;
+        }
+
+        /* Ajustes do layout do chatbot */
+        .chat-container {
+            padding: 20px;
+            margin: 0 auto;
+            max-width: 600px;
+            background-color: #f4f4f9;
+            border-radius: 15px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            background: linear-gradient(135deg, #fff, #e0e0e0);
+        }
+
+        .chat-box {
+            border: 1px solid #ccc;
+            padding: 10px;
+            height: 400px;
+            overflow-y: auto;
+            background-color: white;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .input-area {
+            display: flex;
+            gap: 10px;
+        }
+
+        textarea {
+            flex-grow: 1;
+            padding: 15px;
+            border-radius: 20px;
+            border: 1px solid #ccc;
+            resize: none;
+            box-shadow: inset 0px 0px 5px rgba(0, 0, 0, 0.1);
+            font-size: 16px;
+            background-color: #f9f9f9;
+        }
+
+        button {
+            padding: 10px 30px;
+            background-color: #663399;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #5a2e88;
+        }
+
+        /* Estilos para as mensagens */
+        .message {
+            margin: 10px;
+            padding: 15px;
+            border-radius: 10px;
+            max-width: 60%;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+            clear: both;
+        }
+
+        /* Mensagens do usuário à direita */
+        .user-message {
+            background-color: #dcd6ff;
+            text-align: right;
+            float: right;
+        }
+
+        /* Mensagens da IA à esquerda */
+        .ai-message {
+            background-color: #f1f1f1;
+            text-align: left;
+            float: left;
+        }
+
+        /* Faz as mensagens se alinharem corretamente e evita que quebrem o layout */
+        .clearfix::after {
+            content: "";
+            display: block;
+            clear: both;
+        }
+    </style>
 </head>
 
 <body>
+    <!-- Navbar -->
+    <div class="navbar-container">
+        <ul id="menu">
+            <div class="logo-container">
+                <img src="teenagelogo.png" alt="Teenage Emotions Logo">
+                <h1>Teenage Emotions</h1>
+            </div>
+            <div>
+                <li><a href="index.html">Início</a></li>
+                <li><a href="relatos.html">Relatos</a></li>
+                <li><a href="ia.html">IA</a></li>
+                <li><a href="sobre.html">Sobre Nós</a></li>
+            </div>
+        </ul>
+    </div>
+
+    <!-- Espaço abaixo da navbar fixa -->
+    <div class="spaco-container"></div>
+
+    <!-- Conteúdo do chatbot -->
     <main>
         <div class="chat-container">
             <div id="chat-box" class="chat-box"></div>
@@ -39,56 +181,35 @@
         </div>
     </main>
 
+    <!-- Script do chatbot -->
     <script type="module">
         import { GoogleGenerativeAI } from "@google/generative-ai";
 
-        // Fetch your API_KEY
         const API_KEY = "AIzaSyAZiRcKQnUxl8KmDmux1KUreqnjRD_10Ew";
-
-        // Access your API key (see "Set up your API key" above)
         const genAI = new GoogleGenerativeAI(API_KEY);
         const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
         document.getElementById("send-button").addEventListener("click", run);
 
         async function run() {
-            const userMessage = document.getElementById("prompt").value;
-            const prompt = "Você é uma espécie de orientador, no qual conversa, dá conselhos e encaminha para um responsável medico psicólogo profissional caso a conversa tome um rumo perigoso. Caso aconteça alguma cituacao grave ou fale algo grave. voce deve cortar o assunto imediatamente e solicitar a pessoa a ligar para o cvv ou algo mais critico. Voce nao pode dar respostas com menos de 15 palavras. Caso aconteca, reenvie a mensagem. Sendo isso, responda o próximo prompt com esses quesitos: " + userMessage;
+            const prompt = "Você é uma espécie de orientador, no qual conversa, dá conselhos e encaminha para um responsável medico psicólogo profissional caso a conversa tome um rumo perigoso. Caso aconteça alguma cituacao grave ou fale algo grave. voce deve cortar o assunto imediatamente e solicitar a pessoa a ligar para o cvv ou algo mais critico. Voce nao pode dar respostas com menos de 15 palavras. Caso aconteca, reenvie a mensagem. Sendo isso, responda o próximo prompt com esses quesitos: " + document.getElementById("prompt").value;
 
             const result = await model.generateContent(prompt);
             const response = await result.response;
             const text = await response.text();
 
-            // Append message to chat-box
             const chatBox = document.getElementById("chat-box");
-            chatBox.innerHTML += `<div class="message user-message">${userMessage}</div>`;
-            chatBox.innerHTML += `<div class="message ai-message">${text}</div>`;
 
-            // Scroll to the bottom
+            // Adiciona a mensagem do usuário
+            chatBox.innerHTML += `<div class="message user-message clearfix">${document.getElementById("prompt").value}</div>`;
+
+            // Adiciona a resposta da IA
+            chatBox.innerHTML += `<div class="message ai-message clearfix">${text}</div>`;
+
             chatBox.scrollTop = chatBox.scrollHeight;
 
-            // Clear the input
+            // Limpa o campo de entrada
             document.getElementById("prompt").value = "";
-
-            // Registra a ação do usuário no backend
-            await registerUserAction('user123', userMessage);
-        }
-
-        async function registerUserAction(userId, action) {
-            try {
-                const response = await fetch('http://localhost:3000/register-action', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ userId, action })
-                });
-
-                const result = await response.json();
-                console.log(result.message); // Para fins de depuração
-            } catch (error) {
-                console.error('Erro ao registrar ação:', error);
-            }
         }
     </script>
 </body>
